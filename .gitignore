@@ -1,3 +1,11 @@
-assets/
-protected/runtime/
-themes/classic/views/
+/upload/*
+/assets/*
+/protected/runtime/*
+/themes/classic/views/
+/protected/framework/
+*.tar.gz
+*.sql
+config.local.php
+!dump.tar.gz
+!dump.sql
+!.keepme

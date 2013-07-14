@@ -1,0 +1,3 @@
+date: 16-1-2012
+name:social
+version: v.0.2
