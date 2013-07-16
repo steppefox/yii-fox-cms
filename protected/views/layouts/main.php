@@ -17,7 +17,7 @@
 
 
 	<?php foreach ($this->registerCss as $css):?>
-	<link rel="stylesheet" href="<?=$css['path']?>" media="<?$css['media']?$css['media']:'all'?>" />
+	<link rel="stylesheet" href="<?=$css['path']?>" media="<?=$css['media']?$css['media']:'all'?>" />
 	<?php endforeach;?>
 
 	<!--[if lt IE 8]>
@@ -31,22 +31,33 @@
 </head>
 
 <body>
-<div class="container" id="page">
-	<header id="header">
-		<div id="logo">
-			<?php echo CHtml::encode(Yii::app()->name); ?>
-		</div>
-	</header>
+	<div id="wrap">
+		<header id="header">
+			<nav id="mainmenu">
+				<div class="navbar">
+				  	<div class="navbar-inner">
+				    	<a class="brand" href="#">Title</a>
+				    	<ul class="nav">
+				      		<li class="active"><a href="#">Home</a></li>
+				      		<li><a href="#">Link</a></li>
+				      		<li><a href="#">Link</a></li>
+				    	</ul>
+				  	</div>
+				</div>
+			</nav>
+		</header>
 
-	<nav id="mainmenu">
+      	<!-- Begin page content -->
+      	<div class="container" id="content">
+	    	<?php echo $content; ?>
+      	</div>
+      	<div id="push"></div>
+    </div>
 
-	</nav>
-	<div id="content">
-		<?php echo $content; ?>
-	</div>
 	<footer id="footer">
-
+		<div class="container">
+			Made by Amantay Eldar <?=Yii::app()->user->id.' '.Yii::app()->user->name?>
+		</div>
 	</footer>
-</div>
 </body>
 </html>

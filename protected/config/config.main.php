@@ -9,11 +9,19 @@ return array(
         'application.models.*',
         'application.components.*',
         'application.widgets.*',
-	    'application.modules.catalog.models.*',
-        'application.modules.sales.models.*', //TODO: kinda crappy solution
-        'application.modules.sales.components.*', //TODO: kinda crappy solution
+        'application.modules.admin.modules.rights.*',
+        'application.modules.admin.modules.rights.components.*',
     ),
     'modules' => array(
+        'admin'=>array(
+            'modules' => array(
+                'rights'=>array(
+                    'install' => true,
+                    'userNameColumn'=>'login',
+                    'appLayout'=>'application.modules.admin.views.layouts.main'
+                )
+            )
+        ),
         'gii'=>array(
             'class'=>'system.gii.GiiModule',
             'password'=>'lemonade',
@@ -21,7 +29,6 @@ return array(
             // 'newFileMode'=>0666,
             // 'newDirMode'=>0777,
         ),
-
     ),
     // application components
     'components' => array(
@@ -34,10 +41,13 @@ return array(
         ),
         'user' => array(
             // enable cookie-based authentication
-            'class' => 'CWebUser',
+            'class' => 'RWebUser',
             'allowAutoLogin' => true,
-            'loginUrl'=>array('/sales/account/login'),
+            'loginUrl'=>array('/site/login'),
         ),
+        'authManager' => array(//add this
+                'class' => 'RDbAuthManager',//add this
+        ),//add this
 		'assetManager' => array(
              'linkAssets' => true,
         ),
@@ -60,12 +70,12 @@ return array(
             'username' => 'root',
             'password' => '123',
             'charset' => 'utf8',
-            'schemaCachingDuration' => 3600,
+            // 'schemaCachingDuration' => 3600,
             'enableParamLogging'=>true,
         ),
-        'cache'=>array(
-            'class'=>'system.caching.CDummyCache', //CApcCache',
-        ),
+        // 'cache'=>array(
+        //     'class'=>'system.caching.CDummyCache', //CApcCache',
+        // ),
         'errorHandler' => array(
             // use 'site/error' action to display errors
             'errorAction' => 'site/error',

@@ -3,11 +3,11 @@
 
 # TEAM
 
-    <name> -- <role> -- <twitter>
+    Amantay Eldar -- web developer -- amantay.eldar@gmail.com
 
 # THANKS
 
-    <name>
+    Sam Dark for the presentation about Yii
 
 # TECHNOLOGY COLOPHON
 

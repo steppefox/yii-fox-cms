@@ -1,21 +1,5 @@
 <?php
 
-/**
- * This is the model class for table "user".
- *
- * The followings are the available columns in table 'user':
- * @property integer $id
- * @property string $login
- * @property string $password
- * @property string $nicename
- * @property string $email
- * @property string $register_date
- * @property integer $role
- * @property integer $administration_id
- *
- * The followings are the available model relations:
- * @property Administration $administration
- */
 class User extends CActiveRecord
 {
 
@@ -62,7 +46,7 @@ class User extends CActiveRecord
      */
     public function tableName()
     {
-        return 'user';
+        return 'data_User';
     }
 
     /**
@@ -73,7 +57,7 @@ class User extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('login, email, role', 'required'),
+            array('login, email', 'required'),
             array('role, administration_id', 'numerical', 'integerOnly' => true),
             array('login', 'length', 'max' => 60, 'min' => 3),
             array('login', 'unique'),
@@ -102,7 +86,7 @@ class User extends CActiveRecord
         );
     }
 
-    
+
 
     protected function beforeSave()
     {

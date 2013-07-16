@@ -11,7 +11,7 @@ class AdminController extends Controller
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
-    public $layout = '//layouts/column2';
+    public $layout = 'main';
     /**
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
@@ -26,22 +26,34 @@ class AdminController extends Controller
     /**
      * @return array action filters
      */
-    public function filters()
-    {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
+    // public function filters()
+    // {
+    //     return array(
+    //         'rights', // perform access control for CRUD operations
+    //     );
+    // }
 
     public function init()
     {
         $this->pageTitle = Yii::app()->name . " - " . Yii::t('backend', 'Admin');
-        //Yii::app()->errorHandler->errorAction = array('admin/site/error');
-        Yii::app()->language = Yii::app()->administration->language;
-        Yii::app()->setTheme('cloudadmin');
-        Yii::app()->clientScript->registerCoreScript('jquery.ui');
-        Yii::app()->user->loginUrl = array('admin/default/login');
+        Yii::app()->user->loginUrl = array('/site/login');
         Yii::app()->homeUrl = array('default/');
+    }
+
+    public function beforeAction($action){
+        $status = false;
+        if(parent::beforeAction($action)){
+            if(Yii::app()->user->checkAccess('admin.*')){
+                $status = true;
+            }
+        }
+
+        if($status===TRUE){
+            return $status;
+        }else{
+            throw new CHttpException(403,'Доступ запрещен');
+        }
+
     }
 
 }

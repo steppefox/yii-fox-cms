@@ -40,6 +40,14 @@ class Controller extends CController
             'path'=>$this->baseUrl.'/public/plugin/bootstrap/css/bootstrap.min.css',
             'media'=>'all'
         );
+        $this->registerCss[] = array(
+            'path'=>$this->baseUrl.'/public/css/main.css',
+            'media'=>'all'
+        );
+        $this->registerCss[] = array(
+            'path'=>$this->baseUrl.'/public/css/normalize.css',
+            'media'=>'all'
+        );
 
         $this->registerJs['header'][] = $this->baseUrl.'/public/js/jquery-1.10.2.min.js';
     }
