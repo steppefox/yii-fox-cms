@@ -5,17 +5,25 @@ class AdminModule extends CWebModule
 
 	public function init()
 	{
+		if(Yii::app()->user->isGuest){
+			Yii::app()->user->loginRequired();
+		}
 
         $this->setImport(array(
             'application.models.*',
             'admin.models.*',
             'admin.components.*',
             'rights.*',
-            'rights.components.*'
+            'rights.components.*',
+            'admin.extensions.imperavi.ImperaviRedactorWidget',
         ));
-        //The backend should use a differend user session as frontend
-        // Yii::app()->user->setStateKeyPrefix('admin_');
 
+        Yii::app()->setComponents(array(
+            'bootstrap' => array(
+                'class' => 'admin.extensions.bootstrap.components.Bootstrap',
+            )
+        ));
+        Yii::app()->bootstrap->init();
 	}
 
 	public function beforeControllerAction($controller, $action)

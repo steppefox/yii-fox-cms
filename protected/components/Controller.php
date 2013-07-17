@@ -22,7 +22,7 @@ class Controller extends CController
     public $metaDescription = '';
     public $metaKeywords = '';
     /**
-     * just breadcrumbs
+     * Application breadcrumbs
      */
     public $breadcrumbs=array();
 
@@ -32,6 +32,11 @@ class Controller extends CController
         'footer'=>array()
     );
     public $baseUrl = '';
+
+    /**
+     * Fix for IE in AngularJS applications
+     */
+    public $angularApplication;
 
     public function init()
     {

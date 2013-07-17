@@ -27,4 +27,5 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 	)
 ));
 ?>
+<div class="clear"></div>
 </header>
