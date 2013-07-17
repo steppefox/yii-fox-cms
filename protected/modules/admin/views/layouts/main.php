@@ -14,38 +14,11 @@
 
 	<meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-
-
-	<?php foreach ($this->registerCss as $css):?>
-	<link rel="stylesheet" href="<?=$css['path']?>" media="<?=$css['media']?$css['media']:'all'?>" />
-	<?php endforeach;?>
-
-	<!--[if lt IE 8]>
-	<link rel="stylesheet" type="text/css" href="./css/ie.css" media="screen, projection" />
-	<![endif]-->
-
-	<?php foreach ($this->registerJs['header'] as $js): ?>
-		<script type="text/javascript" src="<?=$js?>"></script>
-	<?php endforeach ?>
-
 </head>
 
 <body>
 	<div id="wrap">
-		<header id="header">
-			<nav id="mainmenu">
-				<div class="navbar">
-				  	<div class="navbar-inner">
-				    	<a class="brand" href="#">Title</a>
-				    	<ul class="nav">
-				      		<li class="active"><a href="#">Home</a></li>
-				      		<li><a href="#">Link</a></li>
-				      		<li><a href="#">Link</a></li>
-				    	</ul>
-				  	</div>
-				</div>
-			</nav>
-		</header>
+		<? $this->widget('admin.widgets.WMenu.WMenu'); ?>
 
       	<!-- Begin page content -->
       	<div class="container" id="content">

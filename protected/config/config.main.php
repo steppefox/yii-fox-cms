@@ -14,20 +14,31 @@ return array(
     ),
     'modules' => array(
         'admin'=>array(
+            'preload'=>array('bootstrap'),
+            'components'=>array(
+                'bootstrap' => array(
+                    'class' => 'admin.extensions.bootstrap.components.Bootstrap',
+                    'responsiveCss' => true,
+                    'fontAwesomeCss'=> true,
+                ),
+            ),
             'modules' => array(
                 'rights'=>array(
                     'install' => true,
                     'userNameColumn'=>'login',
                     'appLayout'=>'application.modules.admin.views.layouts.main'
-                )
+                ),
+                'gii' => array(
+                   'class'=>'system.gii.GiiModule',
+                    'password'=>'lemonade',
+                    'generatorPaths' => array(
+                        'bootstrap.gii'
+                    ),
+                    // 'ipFilters'=>array(...a list of IPs...),
+                    // 'newFileMode'=>0666,
+                    // 'newDirMode'=>0777,
+                ),
             )
-        ),
-        'gii'=>array(
-            'class'=>'system.gii.GiiModule',
-            'password'=>'lemonade',
-            // 'ipFilters'=>array(...a list of IPs...),
-            // 'newFileMode'=>0666,
-            // 'newDirMode'=>0777,
         ),
     ),
     // application components
