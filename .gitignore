@@ -3,9 +3,11 @@
 /protected/runtime/*
 /themes/classic/views/
 /protected/framework/
+/public/image-content
 *.tar.gz
 *.sql
 config.local.php
 !dump.tar.gz
 !dump.sql
 !.keepme
+!.gitkeep
