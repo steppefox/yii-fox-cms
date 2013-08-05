@@ -37,7 +37,7 @@
 
 	<footer id="footer">
 		<div class="container">
-			Made by Amantay Eldar <?=Yii::app()->user->id.' '.Yii::app()->user->name?>
+			Made by Amantay Eldar
 		</div>
 	</footer>
 </body>

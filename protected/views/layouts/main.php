@@ -32,20 +32,7 @@
 
 <body>
 	<div id="wrap">
-		<header id="header">
-			<nav id="mainmenu">
-				<div class="navbar">
-				  	<div class="navbar-inner">
-				    	<a class="brand" href="#">Title</a>
-				    	<ul class="nav">
-				      		<li class="active"><a href="#">Home</a></li>
-				      		<li><a href="#">Link</a></li>
-				      		<li><a href="#">Link</a></li>
-				    	</ul>
-				  	</div>
-				</div>
-			</nav>
-		</header>
+		<? $this->widget('application.widgets.WMenu'); ?>
 
       	<!-- Begin page content -->
       	<div class="container" id="content">

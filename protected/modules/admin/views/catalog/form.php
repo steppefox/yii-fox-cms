@@ -22,8 +22,11 @@
     <span class="text_button_padding">или</span>
     <?=CHtml::link('назад', array('list')); ?>
 </div>
-
+    <?php
+        $categoryList = CatalogCategory::getAdminCategoryListArray();
+    ?>
     <?php echo $form->textFieldRow($model, 'title_ru', array('class'=>'span7')); ?>
+    <?php echo $form->dropDownListRow($model,'parent_CatalogCategory_id',$categoryList,array('span'=>'span7'));?>
     <?php echo $form->textFieldRow($model, 'description_ru', array('class'=>'span7')); ?>
     <?php //echo $form->textAreaRow($model, 'text_ru', array('class'=>'span7')); ?>
     <div class="control-group">

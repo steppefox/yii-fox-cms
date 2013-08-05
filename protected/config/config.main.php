@@ -110,6 +110,11 @@ return array(
                 ),
             ),
         ),
+        'messages'=>array(
+            'class'=>'CDbMessageSource',
+            'sourceMessageTable'=>'sys_SourceMessage',
+            'translatedMessageTable'=>'sys_Message',
+        ),
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']

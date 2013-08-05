@@ -8,7 +8,7 @@ class AdminModule extends CWebModule
 		if(Yii::app()->user->isGuest){
 			Yii::app()->user->loginRequired();
 		}
-
+        Yii::setPathOfAlias('xupload','protected/modules/admin/extensions/xupload/');
         $this->setImport(array(
             'application.models.*',
             'admin.models.*',
@@ -17,7 +17,6 @@ class AdminModule extends CWebModule
             'rights.components.*',
             'admin.extensions.imperavi.ImperaviRedactorWidget',
         ));
-
         Yii::app()->setComponents(array(
             'bootstrap' => array(
                 'class' => 'admin.extensions.bootstrap.components.Bootstrap',

@@ -25,12 +25,10 @@ class CatalogController extends AdminController
     public function actionUpdate($id)
     {
         $model = $this->loadModel($id);
-
-        if (isset($_POST[$this->targetModel]))
-        {
-            $model->attributes = $_POST[$this->targetModel];
-            if ($model->withRelated->save(array('mediaLinks', 'categories')))
-            {
+        $this->performAjaxValidation($model);
+        if (isset($_POST[$this->targetModel])){
+            $model->attributes = Yii::app()->request->getPost($this->targetModel,array());
+            if ($model->save()){
                 Yii::app()->user->setFlash('contentSaved', 'The page was successfully saved!');
                 $this->redirect(array('list'));
             }
@@ -62,11 +60,6 @@ class CatalogController extends AdminController
         $this->render('list');
     }
 
-    /**
-     * Returns the data model based on the primary key given in the GET variable.
-     * If the data model is not found, an HTTP exception will be raised.
-     * @param integer the ID of the model to be loaded
-     */
     public function loadModel($id)
     {
         $model = CActiveRecord::model($this->targetModel)->findByPk((int) $id);
@@ -75,10 +68,6 @@ class CatalogController extends AdminController
         return $model;
     }
 
-    /**
-     * Performs the AJAX validation.
-     * @param CModel the model to be validated
-     */
     protected function performAjaxValidation($model)
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === $this->targetModel.'-form')

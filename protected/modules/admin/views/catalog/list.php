@@ -10,7 +10,7 @@ $this->widget('bootstrap.widgets.TbExtendedGridView', array(
 	'headerOffset' => 40, // 40px is the height of the main navigation at bootstrap
 	'type' => 'striped',
 	'dataProvider' => $model->search(),
-	'responsiveTable' => true,
+	// 'responsiveTable' => true,
 	'template' => "{pager}{items}",
 	// 'columns' => $gridColumns,
 	'columns'=>array(

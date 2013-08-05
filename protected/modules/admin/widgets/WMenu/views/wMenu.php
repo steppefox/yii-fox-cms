@@ -2,10 +2,12 @@
 <?
 $this->widget('bootstrap.widgets.TbNavbar', array(
 	'brand' => Yii::app()->name,
+	'brandUrl'=> Yii::app()->getBaseUrl(true),
 	'items' => array(
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
+				array('label'=>'Главная', 'url'=>Yii::app()->controller->createUrl('default/index')),
 				array('label'=>'Каталог', 'url'=>'#','items'=>array(
 					array('label'=>'Категории', 'icon'=>'tag','url'=>$this->controller->createUrl('catalogCategory/list')),
 					array('label'=>'Товары', 'icon'=>'shopping-cart','url'=>$this->controller->createUrl('catalog/list')),

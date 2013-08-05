@@ -2,11 +2,6 @@
 
 class Catalog extends CActiveRecord
 {
-    public function getName()
-    {
-        return $this->title;
-    }
-
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -19,8 +14,6 @@ class Catalog extends CActiveRecord
 
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('title_ru', 'required'),
             array('status, parent_CatalogCategory_id,price,created_at,updated_at', 'numerical', 'integerOnly' => true),
@@ -33,7 +26,7 @@ class Catalog extends CActiveRecord
     public function relations()
     {
         return array(
-            'content' => array(self::BELONGS_TO, 'Category', 'parent_CatalogCategory_id'),
+            'parentCategory' => array(self::BELONGS_TO, 'Category', 'parent_CatalogCategory_id'),
         );
     }
 
@@ -41,6 +34,8 @@ class Catalog extends CActiveRecord
     {
         return array(
             'id' => 'ID',
+            'parent_Action_id'=>Yii::t('backend', 'Акция'),
+            'parent_CatalogCategory_id'=>Yii::t('backend', 'Категория'),
             'title_ru' => Yii::t('backend', 'Наименование товара'),
             'description_ru' => Yii::t('backend', 'Краткое описание'),
             'text_ru' => Yii::t('backend', 'Полное описание'),
@@ -57,9 +52,9 @@ class Catalog extends CActiveRecord
         $criteria = new CDbCriteria;
         $criteria->compare('id', $this->id);
         $criteria->compare('title_ru', $this->title_ru, true);
-        $criteria->compare('description_ru', $this->description_ru, true);
-        $criteria->compare('text_ru', $this->text_ru, true);
-        $criteria->compare('parent_CatalogCategory_id', $this->parent_CatalogCategory_id);
+        // $criteria->compare('description_ru', $this->description_ru, true);
+        // $criteria->compare('text_ru', $this->text_ru, true);
+        // $criteria->compare('parent_CatalogCategory_id', $this->parent_CatalogCategory_id);
         $criteria->compare('status', $this->status);
 
         return new CActiveDataProvider(get_class($this), array(
@@ -70,7 +65,29 @@ class Catalog extends CActiveRecord
         ));
     }
 
+    public function getPrice(){
+        $price = $this->price;
+        return $price;
+    }
+
+    public static function getNicePrice($price){
+        return preg_replace('/\B(?=(\d{3})+(?!\d))/', ' ', $price);
+    }
+
+    public function at($attribute){
+        $attribute = $attribute.'_'.Yii::app()->language;
+        return $this[$attribute];
+    }
+
     public function beforeValidate(){
+        return true;
+    }
+
+    public function beforeSave(){
+        if($this->created_at==0){
+            $this->created_at=time();
+        }
+        $this->updated_at = time();
         return true;
     }
 }
