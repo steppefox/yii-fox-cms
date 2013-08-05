@@ -17,18 +17,27 @@ class AdminController extends Controller
     }
 
     public function beforeAction($action){
-        $status = false;
-        if(parent::beforeAction($action)){
-            if(Yii::app()->user->checkAccess('admin.*')){
-                $status = true;
-            }
-        }
+        return parent::beforeAction($action);
+    }
 
-        if($status===TRUE){
-            return $status;
-        }else{
-            throw new CHttpException(403,'Доступ запрещен');
-        }
+    public function allowedActions(){
+        return '';
+    }
+
+    public function filterRights( $filterChain ) {
+        $filter = new RightsFilter;
+        $filter->allowedActions = $this->allowedActions();
+        $filter->filter( $filterChain );
+    }
+
+    public function filters() {
+        return array(
+            'rights',
+        );
+    }
+
+    public function accessDenied(){
+        throw new CHttpException(403,'Доступ запрещен');
 
     }
 
