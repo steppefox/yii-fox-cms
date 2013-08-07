@@ -1,8 +1,8 @@
--- MySQL dump 10.14  Distrib 5.5.31-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.31, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: fox
 -- ------------------------------------------------------
--- Server version	5.5.31-MariaDB-1~quantal-log
+-- Server version	5.5.31-0ubuntu0.12.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -65,7 +65,7 @@ CREATE TABLE `AuthItem` (
 
 LOCK TABLES `AuthItem` WRITE;
 /*!40000 ALTER TABLE `AuthItem` DISABLE KEYS */;
-INSERT INTO `AuthItem` VALUES ('Admin',2,NULL,NULL,NULL);
+INSERT INTO `AuthItem` VALUES ('Admin',2,'Администратор',NULL,NULL);
 /*!40000 ALTER TABLE `AuthItem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,6 +121,132 @@ LOCK TABLES `Rights` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `data_Catalog`
+--
+
+DROP TABLE IF EXISTS `data_Catalog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_Catalog` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_CatalogCategory_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `title_ru` varchar(255) NOT NULL,
+  `description_ru` varchar(255) NOT NULL,
+  `text_ru` text NOT NULL,
+  `image` text NOT NULL,
+  `price` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `updated_at` int(10) unsigned DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `parent_CatalogCategory_id` (`parent_CatalogCategory_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_Catalog`
+--
+
+LOCK TABLES `data_Catalog` WRITE;
+/*!40000 ALTER TABLE `data_Catalog` DISABLE KEYS */;
+INSERT INTO `data_Catalog` VALUES (1,1,'Прожектор X100-500','Самый клёвый прожектор','<p>\r\n	<strong>Прожектор X100-500</strong>\r\n</p>\r\n<p>\r\n	Самый мощный прожектор на просторах РК.\r\n</p>','',90000,1375382019,1375382019,1);
+/*!40000 ALTER TABLE `data_Catalog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_CatalogCategory`
+--
+
+DROP TABLE IF EXISTS `data_CatalogCategory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_CatalogCategory` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `title_ru` varchar(255) NOT NULL,
+  `image` text NOT NULL,
+  `created_at` int(10) unsigned DEFAULT '0',
+  `updated_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_CatalogCategory`
+--
+
+LOCK TABLES `data_CatalogCategory` WRITE;
+/*!40000 ALTER TABLE `data_CatalogCategory` DISABLE KEYS */;
+INSERT INTO `data_CatalogCategory` VALUES (1,0,'Прожекторы','',1375381724,1375381724,1),(2,0,'Вспышки','',1375381763,1375381845,1),(3,0,'Светолучи','',1375381857,1375381857,1),(4,0,'Фары','',1375381866,1375381866,1),(5,0,'Фонарики','',1375381871,1375381871,1);
+/*!40000 ALTER TABLE `data_CatalogCategory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_Navigation`
+--
+
+DROP TABLE IF EXISTS `data_Navigation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_Navigation` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` smallint(5) NOT NULL DEFAULT '0',
+  `ancestors` varchar(255) NOT NULL DEFAULT '[]',
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT 'Тип меню (верхнее, нижнее и т.д. )',
+  `url` varchar(150) NOT NULL,
+  `title_ru` varchar(255) NOT NULL,
+  `weight` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`status`),
+  KEY `type` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='Таблица навигации';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_Navigation`
+--
+
+LOCK TABLES `data_Navigation` WRITE;
+/*!40000 ALTER TABLE `data_Navigation` DISABLE KEYS */;
+INSERT INTO `data_Navigation` VALUES (1,0,'[]',1,'/','Главная',1,1),(2,0,'[]',1,'/catalog','Каталог',2,1),(3,0,'[]',1,'/site/about','О нас',3,1);
+/*!40000 ALTER TABLE `data_Navigation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `data_Page`
+--
+
+DROP TABLE IF EXISTS `data_Page`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_Page` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title_ru` varchar(255) NOT NULL,
+  `description_ru` varchar(255) NOT NULL,
+  `text_ru` text NOT NULL,
+  `image` text NOT NULL,
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `updated_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_Page`
+--
+
+LOCK TABLES `data_Page` WRITE;
+/*!40000 ALTER TABLE `data_Page` DISABLE KEYS */;
+INSERT INTO `data_Page` VALUES (1,'','2','','','',1375379782,1375379787,1);
+/*!40000 ALTER TABLE `data_Page` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `data_User`
 --
 
@@ -132,9 +258,9 @@ CREATE TABLE `data_User` (
   `login` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,8 +269,57 @@ CREATE TABLE `data_User` (
 
 LOCK TABLES `data_User` WRITE;
 /*!40000 ALTER TABLE `data_User` DISABLE KEYS */;
-INSERT INTO `data_User` VALUES (1,'root','root@site.com','202cb962ac59075b964b07152d234b70',1);
+INSERT INTO `data_User` VALUES (1,'root','root@vesna.kz','202cb962ac59075b964b07152d234b70',1),(2,'user','user@vesna.kz','202cb962ac59075b964b07152d234b70',1);
 /*!40000 ALTER TABLE `data_User` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_Message`
+--
+
+DROP TABLE IF EXISTS `sys_Message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_Message` (
+  `id` int(11) NOT NULL DEFAULT '0',
+  `language` varchar(16) NOT NULL DEFAULT '',
+  `translation` text,
+  PRIMARY KEY (`id`,`language`),
+  CONSTRAINT `FK_Message_SourceMessage` FOREIGN KEY (`id`) REFERENCES `sys_SourceMessage` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_Message`
+--
+
+LOCK TABLES `sys_Message` WRITE;
+/*!40000 ALTER TABLE `sys_Message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_Message` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sys_SourceMessage`
+--
+
+DROP TABLE IF EXISTS `sys_SourceMessage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sys_SourceMessage` (
+  `id` int(11) NOT NULL,
+  `category` varchar(32) DEFAULT NULL,
+  `message` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sys_SourceMessage`
+--
+
+LOCK TABLES `sys_SourceMessage` WRITE;
+/*!40000 ALTER TABLE `sys_SourceMessage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sys_SourceMessage` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -156,4 +331,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-07-16 17:34:46
+-- Dump completed on 2013-08-07 17:05:24
