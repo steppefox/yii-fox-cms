@@ -6,7 +6,7 @@
 /public/image-content
 *.tar.gz
 *.sql
-config.local.php
+/protected/config/*.local.php
 !dump.tar.gz
 !dump.sql
 !.keepme

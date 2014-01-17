@@ -2,12 +2,12 @@
 ini_set('display_errors',1);
 //date_default_timezone_set('Europe/Amsterdam'); // TODO: change this accordingly
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/protected/framework/yii.php'; // <- download yii framework 1.1.x and place it in this directory
+$yii=dirname(__FILE__).'/../framework1.14/yii.php'; // <- download yii framework 1.1.x and place it in this directory
 
 $configMain= require dirname(__FILE__).'/protected/config/config.main.php';
 $configLocal = array();
 if(file_exists(dirname(__FILE__).'/protected/config/config.local.php')){
-        $configLocal= require dirname(__FILE__).'/protected/config/config.local.php';
+    $configLocal= require dirname(__FILE__).'/protected/config/config.local.php';
 }
 
 

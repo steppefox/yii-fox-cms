@@ -89,26 +89,33 @@ class XUpload extends CJuiInputWidget {
 
         list($name, $id) = $this -> resolveNameID();
 
-        $model = $this -> model;
+        $model = $this->model;
+        $modelClass = get_class($model);
 
-        if ($this -> uploadTemplate === null) {
-            $this -> uploadTemplate = "#template-upload";
+        if ($this->uploadTemplate === null) {
+            $this->uploadTemplate = "#template-upload";
         }
-        if ($this -> downloadTemplate === null) {
-            $this -> downloadTemplate = "#template-download";
+        if ($this->downloadTemplate === null) {
+            $this->downloadTemplate = "#template-download";
         }
 
         $this -> render($this->uploadView);
         $this -> render($this->downloadView);
 
-        if (!isset($this -> htmlOptions['enctype'])) {
+        if (!isset($this->htmlOptions['enctype'])) {
             $this->htmlOptions['enctype'] = 'multipart/form-data';
         }
 
         if (!isset($this->htmlOptions['id'])) {
             $this->htmlOptions['id'] = get_class($model) . "-form-".$this->attribute;
         }
-
+        if(!$this->url){
+            $this->url = Yii::app()->controller->createUrl(Yii::app()->controller->id."/upload", array(
+                "id" => (int)$model->id,
+                "attribute" => $this->attribute,
+                "model" => $modelClass,
+            ));
+        }
         $this->options['url'] = $this->url;
         $this->options['autoUpload'] = $this->autoUpload;
 
@@ -120,7 +127,7 @@ class XUpload extends CJuiInputWidget {
 
         Yii::app()->clientScript->registerScript(__CLASS__.'#'.$this ->htmlOptions['id'], "jQuery('#{$this->htmlOptions['id']}').fileupload({$options});", CClientScript::POS_READY);
         $htmlOptions = array();
-        if ($this -> multiple) {
+        if ($this->multiple) {
             $htmlOptions["multiple"] = true;
             /* if($this->hasModel()){
                  $this -> attribute = "[]" . $this -> attribute;
@@ -128,17 +135,24 @@ class XUpload extends CJuiInputWidget {
                  $this -> attribute = "[]" . $this -> name;
              }*/
         }
+        $loadExistsImagesUrl = Yii::app()->controller->createUrl(Yii::app()->controller->id."/upload", array(
+            "id" => (int)$model->id,
+            "attribute" => $this->attribute,
+            "model" => $modelClass,
+            "load" => 1
+        ));
+        $ifNotMultipleCondition = '';
+        if($this->multiple==FALSE){
+            $ifNotMultipleCondition = "if(XUploadSize(result)){
+                var fu = $(this).data('fileupload');
+                fu._disableFileInputButton();
+            }";
+        }
 
-        $modelClass = get_class($model);
-        Yii::app()->clientScript->registerScript("XUpload-".$this->id,
+        Yii::app()->clientScript->registerScript("XUpload-".$this->htmlOptions['id'],
         "$('#{$this->htmlOptions['id']}').addClass('fileupload-processing');
         $.ajax({
-            url: '".Yii::app()->controller->createUrl(Yii::app()->controller->id."/upload", array(
-                    "id" => (int)$model->id,
-                    "attribute" => $this->attribute,
-                    "model" => $modelClass,
-                    "load" => 1
-                ))."',
+            url: '".$loadExistsImagesUrl."',
             dataType: 'json',
             context: $('#{$this->htmlOptions['id']}')[0]
         }).always(function () {
@@ -146,9 +160,19 @@ class XUpload extends CJuiInputWidget {
         }).done(function (result) {
             $(this).fileupload('option', 'done')
                 .call(this, null, {result: result});
-        });"
-        );
+            ".$ifNotMultipleCondition."
+        });
 
+        function XUploadSize(obj) {
+            var size = 0, key;
+            for (key in obj) {
+                if (obj.hasOwnProperty(key)) size++;
+            }
+            return size;
+        };
+
+        "
+        );
 
         $this -> render($this->formView, compact('htmlOptions'));
 
@@ -160,26 +184,26 @@ class XUpload extends CJuiInputWidget {
      */
     public function publishAssets() {
         $assets = dirname(__FILE__) . '/assets';
-        $baseUrl = Yii::app() -> assetManager -> publish($assets);
+        $baseUrl = Yii::app()->assetManager -> publish($assets);
         if (is_dir($assets)) {
             //@ALEXTODO make ui interface optional
-            Yii::app() -> clientScript -> registerCssFile($baseUrl . '/css/jquery.fileupload-ui.css');
+            Yii::app()->clientScript -> registerCssFile($baseUrl . '/css/jquery.fileupload-ui.css');
             //The Templates plugin is included to render the upload/download listings
-            Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/tmpl.min.js', CClientScript::POS_END);
+            Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/tmpl.min.js', CClientScript::POS_END);
             // The basic File Upload plugin
-            Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/jquery.fileupload.js', CClientScript::POS_END);
+            Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/jquery.fileupload.js', CClientScript::POS_END);
             if($this->previewImages || $this->imageProcessing){
-                Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/load-image.min.js', CClientScript::POS_END);
-                Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/canvas-to-blob.min.js', CClientScript::POS_END);
+                Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/load-image.min.js', CClientScript::POS_END);
+                Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/canvas-to-blob.min.js', CClientScript::POS_END);
             }
             //The Iframe Transport is required for browsers without support for XHR file uploads
-            Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/jquery.iframe-transport.js', CClientScript::POS_END);
+            Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/jquery.iframe-transport.js', CClientScript::POS_END);
             // The File Upload image processing plugin
             if($this->imageProcessing){
-                Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/jquery.fileupload-ip.js', CClientScript::POS_END);
+                Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/jquery.fileupload-ip.js', CClientScript::POS_END);
             }
             //The File Upload user interface plugin
-            Yii::app() -> clientScript -> registerScriptFile($baseUrl . '/js/jquery.fileupload-ui.js', CClientScript::POS_END);
+            Yii::app()->clientScript -> registerScriptFile($baseUrl . '/js/jquery.fileupload-ui.js', CClientScript::POS_END);
 
             //The localization script
             $messages = CJavaScript::encode(array(

@@ -1,17 +1,33 @@
-<!-- The file upload form used as target for the file upload widget -->
-<?php if ($this->showForm) echo CHtml::beginForm($this -> url, 'post', $this -> htmlOptions);?>
-<div class="row fileupload-buttonbar">
-	<div style="font-size:16px; font-weight: bold; margin-bottom:12px;">
-		<?
-			$attributes = $this->model->attributeLabels();
-			echo $attributes[$this->attribute];
-		?>
-	</div>
+<?
+$labels = $this->model->attributeLabels();
+?>
+
+<div class="control-group">
+<label class="control-label" style="padding-top:0;">
+	<?=(isset($labels[$this->attribute]))?$labels[$this->attribute]:$this->attribute?>
+</label>
+<div class="controls">
+
+
+
+<?php if ($this->showForm):?>
+<?=CHtml::beginForm($this->url, 'post', $this->htmlOptions);?>
+<?php else:?>
+<div id="<?=$this->htmlOptions['id']?>">
+<?php endif;?>
+
+<div class="row fileupload-buttonbar" style="margin-left:0;">
 	<div class="span7">
 		<!-- The fileinput-button span is used to style the file input field as button -->
 		<span class="btn btn-success fileinput-button">
             <i class="icon-plus icon-white"></i>
-            <span><?php echo $this->t('1#Add files|0#Choose file', $this->multiple); ?></span>
+            <span>
+            	<?php if ($this->multiple): ?>
+            		Добавить файлы
+            	<?php else: ?>
+            		Выберите файл
+            	<?php endif ?>
+            </span>
 			<?php
             if ($this -> hasModel()) :
                 echo CHtml::activeFileField($this -> model, $this -> attribute, $htmlOptions) . "\n";
@@ -20,21 +36,21 @@
             endif;
             ?>
 		</span>
-        <?php if ($this->multiple) { ?>
+        <?php if ($this->multiple): ?>
 		<button type="submit" class="btn btn-primary start">
 			<i class="icon-upload icon-white"></i>
-			<span>Start upload</span>
+			<span>Начать загрузку</span>
 		</button>
 		<button type="reset" class="btn btn-warning cancel">
 			<i class="icon-ban-circle icon-white"></i>
-			<span>Cancel upload</span>
+			<span>Отменить загрузку</span>
 		</button>
 		<button type="button" class="btn btn-danger delete">
 			<i class="icon-trash icon-white"></i>
-			<span>Delete</span>
+			<span>Удалить</span>
 		</button>
 		<input type="checkbox" class="toggle">
-        <?php } ?>
+        <?php endif; ?>
 	</div>
 	<div class="span5">
 		<!-- The global progress bar -->
@@ -50,4 +66,12 @@
 <table class="table table-striped">
 	<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
 </table>
-<?php if ($this->showForm) echo CHtml::endForm();?>
+<?php if ($this->showForm):?>
+<?=CHtml::endForm();?>
+<?php else:?>
+</div>
+<?php endif;?>
+
+</div>
+</div>
+

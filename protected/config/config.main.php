@@ -28,15 +28,21 @@ return array(
                     'userNameColumn'=>'login',
                     'appLayout'=>'application.modules.admin.views.layouts.main'
                 ),
-                'gii' => array(
-                   'class'=>'system.gii.GiiModule',
-                    'password'=>'lemonade',
+                'gii'=>array(
+                    'preload'=>array('bootstrap'),
+                    'components'=>array(
+                        'bootstrap'=>array(
+                            'class'=>'admin.extensions.bootstrap.components.Bootstrap'
+                    )),
+                    'class'=>'system.gii.GiiModule',
+
+                    'password'=>'123',
+
                     'generatorPaths' => array(
                         'bootstrap.gii'
                     ),
-                    // 'ipFilters'=>array(...a list of IPs...),
-                    // 'newFileMode'=>0666,
-                    // 'newDirMode'=>0777,
+                    // If removed, Gii defaults to localhost only. Edit carefully to taste.
+                    'ipFilters'=>array('127.0.0.1','::1','*'),
                 ),
             )
         ),
@@ -78,8 +84,8 @@ return array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=dbname',
             'emulatePrepare' => true,
-            'username' => 'root',
-            'password' => '123',
+            'username' => 'username',
+            'password' => 'password',
             'charset' => 'utf8',
             // 'schemaCachingDuration' => 3600,
             'enableParamLogging'=>true,
