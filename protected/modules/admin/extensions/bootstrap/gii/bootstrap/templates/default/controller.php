@@ -6,7 +6,6 @@
  */
 ?>
 <?php echo "<?php\n"; ?>
-
 class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass."\n"; ?>
 {
 	public $targetModel = '<?=$this->modelClass?>';
@@ -32,9 +31,12 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 
 	public $defaultAction = "list";
 
-	public function actionCreate()
-	{
-		$model=new $this->targetModel;
+	public function actionForm(){
+		if($id=Yii::app()->request->getQuery('id')){
+			$model=$this->loadModel($id);
+		}else{
+			$model = new $this->targetModel;
+		}
 
 		$this->performAjaxValidation($model);
 
@@ -48,28 +50,21 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 			}
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
-
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		$this->performAjaxValidation($model);
-
-		if(isset($_POST[$this->targetModel])){
-			$model->attributes=$_POST[$this->targetModel];
-			if($model->save()){
-			 	Yii::app()->user->setFlash('success', 'Сохранено');
-				$this->redirect(array('list'));
-			}else{
-				 Yii::app()->user->setFlash('error', 'Ошибка при сохранении!');
-			}
+		if($model->isNewRecord){
+			$this->pageCaption = 'Добавление записи';
+			$this->breadcrumbs=array(
+				$model::modelTitle()=>array('index'),
+				'Создание',
+			);
+		}else{
+			$this->pageCaption = 'Редактирование записи';
+			$this->breadcrumbs=array(
+				$model::modelTitle()=>array('index'),
+				'Редактирование',
+			);
 		}
 
-		$this->render('update',array(
+		$this->render('form',array(
 			'model'=>$model,
 		));
 	}

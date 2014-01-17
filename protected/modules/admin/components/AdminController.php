@@ -8,6 +8,8 @@ class AdminController extends Controller
 {
 
     public $layout = 'main';
+    public $pageTitle ='';
+    public $pageCaption = '';
 
     public function init()
     {

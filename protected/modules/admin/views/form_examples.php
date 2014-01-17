@@ -15,10 +15,9 @@
 
 <?php
     $this->widget('xupload.XUpload', array(
-        'url' => $this->createUrl($this->id."/upload",array("id" => (int)$model->id,"attribute" => "image","model" => get_class($model))),
         'model' => $model,
         'attribute' => 'image',
         'multiple' => true,
-        'showForm'=>true,
+        'showForm'=>false,
     ));
 ?>

@@ -1,78 +1,59 @@
-<?php
-$this->breadcrumbs=array(
-	News::modelTitle()=>array('list'),
-	'Редактирование',
-);
+<div class="form-actions">
+	<a href="<?=$this->createUrl('form')?>" class="btn btn-success">
+		<i class="icon-plus"></i>&nbsp;Добавить
+	</a>
+</div>
 
-$this->beginWidget('bootstrap.widgets.TbModal', array('id' => 'myModal')); ?>
+<?php $model = new $this->targetModel;
+$this->widget('bootstrap.widgets.TbExtendedGridView', array(
+	'fixedHeader' => true,
+	'headerOffset' => 40, // 40px is the height of the main navigation at bootstrap
+	'type' => 'striped',
+	'dataProvider' => $model->search(),
+	// 'responsiveTable' => true,
+	'template' => "{pager}{items}",
+	// 'columns' => $gridColumns,
+	'columns'=>array(
+		'id',
+        'title_ru',
+        // 'content:html',
+        array(
+            'name'=>'created_at',
+            'value'=>'date("d-m-Y", $data->created_at)',
+        ),
+        array(
+            'name'=>'updated_at',
+            'value'=>'date("d-m-Y", $data->updated_at)',
+        ),
+        array(
+            'class'=>'CButtonColumn',
+            'htmlOptions'=>array(
+            	'style'=>'width:200px',
+            ),
+            'buttons'=>array(
+                'update'=>array(
+                    'label'=>'Ред.',
+                    'url'=>function($data){
+                        return Yii::app()->controller->createUrl('form',array('id'=>$data->id));
+                    },
+                    'imageUrl'=>false,
+                    'options'=>array(
+                        'class'=>'btn btn-success btn-mini',
+                    ),
+                ),
+                'delete'=>array(
+                    'label'=>'Уд.',
+                    // 'url'=>$this->createUrl('form',array('id'=>$model->id)),
+                    'imageUrl'=>false,
+                    'options'=>array(
+                        'class'=>'btn btn-danger btn-mini',
+                        'style'=>'margin-left:20px;',
+                    ),
+                ),
+            ),
+            'template'=>'{update}{delete}'
+        ),
+    ),
+));
 
-	<div class="modal-header">
-		<a class="close" data-dismiss="modal">&times;</a>
-		<h4>Настройка таблицы</h4>
-	</div>
-
-	<div class="modal-body">
-		<form id="userTableSetupForm">
-			<?php echo CHtml::checkBoxList(
-			    'Table',
-			    Yii::app()->user->getState('newsTable',$this->getDefaultTableAttributes()),
-			    	$this->module->getTableAttributesNames(new News,$this->tableAttributes),
-			    array(
-			    	'container'=>'div',
-			    	'separator'=>'',
-			    	'checkAll'=>'Select all tasks',
-			    	'checkAllLast'=>true,
-					'template'=>'<div class="row-fluid"><div class="span1">{input}</div><div class="span11">{label}</div></div>',
-			    )
-
-
-			); ?>
-		</form>
-
-	</div>
-
-	<div class="modal-footer">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'type' => 'primary',
-			'label' => 'Save changes',
-			'url' => '#',
-			'htmlOptions' => array(
-				'data-dismiss' => 'modal',
-				'onclick'=>'setupTable()'
-			),
-		)); ?>
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'label' => 'Close',
-			'url' => '#',
-			'htmlOptions' => array('data-dismiss' => 'modal'),
-		)); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-<h1><?=News::modelTitle()?></h1>
-<?php $this->widget('bootstrap.widgets.TbButton', array(
-	'label' => 'Настройка таблицы',
-	'type' => 'primary',
-	'htmlOptions' => array(
-	'data-toggle' => 'modal',
-	'data-target' => '#myModal',
-	),
-)); ?>
-<a class="btn btn-success" href="<?=$this->createUrl('create')?>">
-	+ Создать
-</a>
-<?php $this->renderPartial('_list',compact('model'))?>
-
-<script>
-function setupTable(){
-	$.ajax({
-		url: '<?=$this->createUrl("tableSetup")?>',
-		type: 'POST',
-		data: $("#userTableSetupForm").serializeArray(),
-		success: function(e){
-			window.location.reload()
-		}
-	})
-}
-</script>
+?>

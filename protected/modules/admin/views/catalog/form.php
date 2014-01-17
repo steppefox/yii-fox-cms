@@ -28,29 +28,10 @@
     <?php echo $form->textFieldRow($model, 'title_ru', array('class'=>'span7')); ?>
     <?php echo $form->dropDownListRow($model,'parent_CatalogCategory_id',$categoryList,array('span'=>'span7'));?>
     <?php echo $form->textFieldRow($model, 'description_ru', array('class'=>'span7')); ?>
-    <?php //echo $form->textAreaRow($model, 'text_ru', array('class'=>'span7')); ?>
-    <div class="control-group">
-        <label class="control-label" style="padding-top:0;">
-            <?=CHtml::activeLabelEx($model,'text_ru');?>
-        </label>
-        <div class="controls">
-            <? $this->widget('ImperaviRedactorWidget', array(
-                'model' => $model,
-                'attribute' => 'text_ru',
-                //'name' => 'my_input_name',
-                'options' => array(
-                    'lang' => 'ru',
-                    'toolbar' => true,
-                    'iframe' => true,
-                    'css' => 'wym.css',
-                ),
-                'htmlOptions'=>array(
-                    'style'=>'height:200px',
-                )
-            ));?>
-            <span class="help-inline error" id="Page_url_em_" style="display: none;"></span>
-        </div>
-    </div>
+    <?=$form->redactorRow($model,'text_ru',array('options'=>array(
+        'imageUpload'=>$this->createUrl('timesafe/json/image')
+    )));?>
+
 
     <?
         $this->widget('xupload.XUpload', array(

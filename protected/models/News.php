@@ -24,6 +24,7 @@ class News extends CActiveRecord
 			array('is_visible', 'numerical', 'integerOnly'=>true),
 			array('parent_NewsCategory_id', 'length', 'max'=>10),
 			array('title_ru', 'length', 'max'=>255),
+			array('updated_at,created_at', 'numerical', 'integerOnly'=>true),
 			array('id, parent_NewsCategory_id, title_ru, is_visible', 'safe', 'on'=>'search'),
 		);
 	}

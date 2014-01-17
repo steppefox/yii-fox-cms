@@ -151,18 +151,203 @@ class TbInputHorizontal extends TbInput
 		echo '</div>';
 	}
 
+	// /**
+	//  * Renders a file field.
+	//  * @return string the rendered content
+	//  */
+	// protected function fileField()
+	// {
+	// 	echo $this->getLabel();
+	// 	echo '<div class="controls">';
+	// 	echo $this->form->fileField($this->model, $this->attribute, $this->htmlOptions);
+	// 	echo $this->getError() . $this->getHint();
+	// 	echo '</div>';
+	// }
+
+	protected function singleFileField() {
+		$images = $this->model->getAttribute( $this->attribute );
+		if(json_decode($images,true)===null){
+			$images = array($images);
+		}else{
+			$images = json_decode($images,true);
+		}
+
+		$className = get_class( $this->model );
+		echo $this->getLabel().'<div class="controls">';
+		if($images){
+			foreach ($images as $key => $image){
+				$type = 'image';
+				if ( strstr( $this->attribute, 'image' ) ) {
+					$showimage = 'upload/'.$className.'/tm/'.$image;
+					$fImage = 'upload/'.$className.'/full/'.$image;
+				}else {
+					$type = 'file';
+					$showimage = 'upload/'.$className.'/'.$image;
+				}
+				if ( is_file( $showimage ) ) {
+					$size = getimagesize( $showimage );
+					if ( $type==='image' )
+						echo '<div class="span3"><span class="label label-inverse"><i class="icon-caret-right"></i> '.($key+1).'</span> '.CHtml::link( CHtml::image( '/'.$showimage.'', '', array( 'width'=>$size['0'], 'height'=>$size['1'] ) ), '/'.$fImage, array( 'target'=>'_blank' ) ).'&nbsp;</div>';
+					else {
+						echo '<div class="span3">'.CHtml::link( '<i class="icon-search"></i> Показать ('.round( filesize( $showimage )/1024 ).' Кб)', '/'.$showimage, array( 'class'=>'btn', 'target'=>'_blank' ) ).'&nbsp;</div>';
+					}
+
+
+					echo '<div class="offset3">';
+					//echo CHtml::htmlButton( '<i class="icon-pencil"></i> Изменить', array( 'class'=>'btn btn-info', 'onclick'=>'js:$("#file-'.$this->attribute.'-'.$key.'").addClass("in");$(this).addClass("disabled")' ) ).'&nbsp;';
+					echo CHtml::htmlButton(
+						'<i class="icon-remove-circle"></i> Удалить',
+						array(
+							'class'=>'btn btn-danger',
+							'onclick'=>'js:if($("#'.$className.'-'.$this->attribute.'-delete_'.$key.'")
+							.val()==""){
+								$(this).html("<i class=icon-ok-circle></i> Не удалять")
+								.addClass("btn-success");
+								$("#'.$className.'-'.$this->attribute.'-delete_'.$key.'")
+								.val(1)
+;							}else{
+								$(this).html("<i class=icon-remove-circle></i> Удалить")
+								.removeClass("btn-success");
+								$("#'.$className.'-'.$this->attribute.'-delete_'.$key.'")
+								.val("");}'
+						)
+					).'<br>';
+					// echo $this->form->fileField( $this->model, $this->attribute, array( 'class'=>'input-file fade out', 'id'=>'file-'.$this->attribute ) );
+					echo CHtml::fileField($className.'['.$this->attribute.'][]','', array( 'class'=>'input-file fade out', 'id'=>'file-'.$this->attribute.'-'.$key));
+
+					//echo CHtml::hiddenField( $this->attribute.'-src-'.$key, $image );
+					echo CHtml::hiddenField( $className.'-'.$this->attribute.'-delete['.$key.']', '' );
+					echo '</div>';
+				}else {
+					echo CHtml::fileField($className.'['.$this->attribute.'][]','', array( 'class'=>'input-file'));
+					echo CHtml::hiddenField( $className.'-'.$this->attribute.'-delete['.$key.']', '1' );
+					//echo $this->form->fileField( $this->model, $this->attribute, array( 'class'=>'input-file' ) );
+				}
+
+			}
+		}else{
+			echo CHtml::fileField($className.'['.$this->attribute.'][]','', array( 'class'=>'input-file'));
+		}
+		echo $this->getError().$this->getHint();
+		echo '</div>';
+	}
+
 	/**
 	 * Renders a file field.
 	 * @return string the rendered content
 	 */
-	protected function fileField()
-	{
-		echo $this->getLabel();
-		echo '<div class="controls">';
-		echo $this->form->fileField($this->model, $this->attribute, $this->htmlOptions);
-		echo $this->getError() . $this->getHint();
-		echo '</div>';
+	protected function fileField() {
+
+		$images = $this->model->getAttribute( $this->attribute );
+		if(json_decode($images,true)===null){
+		//FailBack
+			$images = array($images);
+		}else{
+		//Normal
+			$images = json_decode($images,true);
+		}
+
+		$className = get_class( $this->model );
+		echo $this->getLabel().'<div class="controls">';
+			$j = 0;
+			foreach ($images as $key => $image) {
+				$type = 'image';
+				if ( strstr( $this->attribute, 'image' ) ) {
+					$showimage = 'upload/'.$className.'/tm/'.$image;
+					$fImage = 'upload/'.$className.'/full/'.$image;
+				}else {
+					$type = 'file';
+					$showimage = 'upload/'.$className.'/'.$image;
+				}
+				if (is_file($showimage)){
+				echo '<div class="clearfix">';
+					$j++;
+					$size = getimagesize( $showimage );
+					if ( $type==='image' )
+						echo '
+					<div class="span3">
+						<span class="label label-inverse">
+							<i class="icon-caret-right"></i> '.($j).'
+						</span>
+						'.CHtml::link(
+							CHtml::image(
+								'/'.$showimage.'',
+								'',
+								array(
+									'width'=>$size['0'],
+									'height'=>$size['1']
+								)
+							),
+							'/'.$fImage,
+							array('target'=>'_blank')
+						).'&nbsp;</div>';
+					else {
+						echo '<div class="span3">
+						'.CHtml::link('<i class="icon-search"></i> Показать ('
+							.round( filesize( $showimage )/1024 )
+							.' Кб)','/'.$showimage,
+							array( 'class'=>'btn', 'target'=>'_blank' )
+						).'&nbsp;</div>';
+					}
+
+
+					echo '<div class="offset3">';
+					// echo CHtml::htmlButton(
+					// 		'<i class="icon-pencil"></i> Изменить',
+					// 		array(
+					// 			'class'=>'btn btn-info',
+					// 			'onclick'=>'js:
+					// 				$("#file-'.$this->attribute.'-'.$key.'")
+					// 				.css({visibility:\'visible\'})
+					// 				.show(300);
+					// 				$(this)
+					// 				.addClass("disabled")'
+					// 		)
+					// 	).'&nbsp;';
+					echo CHtml::htmlButton(
+						'<i class="icon-remove-circle"></i> Удалить',
+						array(
+							'class'=>'btn btn-danger',
+							'onclick'=>'js:
+								if($("#'.$className.'-'.$this->attribute.'-delete_'.$key.'").val()==""){
+									$(this)
+									.html("<i class=icon-ok-circle></i> Не удалять")
+									.addClass("btn-success");
+									$("#'.$className.'-'.$this->attribute.'-delete_'.$key.'")
+									.val(1);
+								}else{
+									$(this).html("<i class=icon-remove-circle></i> Удалить")
+									.removeClass("btn-success");
+									$("#'.$className.'-'.$this->attribute.'-delete_'.$key.'").val("");
+								}'
+							)
+					).'<br>';
+					// echo $this->form->fileField( $this->model, $this->attribute, array( 'class'=>'input-file fade out', 'id'=>'file-'.$this->attribute ) );
+					echo CHtml::fileField($className.'['.$this->attribute.'][]','', array( 'class'=>'input-file', 'style'=>'visibility:hidden; display:none;','id'=>'file-'.$this->attribute.'-'.$key ) );
+					echo CHtml::hiddenField( $className.'-'.$this->attribute.'-delete['.$key.']', '' );
+					//echo CHtml::hiddenField( $this->attribute.'-delete-'.$key, '' );
+					echo '</div>';
+				echo '</div><hr>';
+				}else {
+					//echo CHtml::fileField($className.'['.$this->attribute.']['.$key.']','', array( 'class'=>'input-file'));
+					echo CHtml::hiddenField( $className.'-'.$this->attribute.'-delete['.$key.']', '1' );
+					//echo $this->form->fileField( $this->model, $this->attribute, array( 'class'=>'input-file' ) );
+				}
+			}
+		echo '
+
+		<button class="btn btn-mini btn-success addimage'.$this->attribute.'" type="button"><i class="icon-plus"></i> добавить ещё</button>
+		'.$this->getError().$this->getHint().'
+		</div>
+		';
+		Yii::app()->clientScript->registerScript('adding-images-'.$this->attribute,"
+			$('.addimage".$this->attribute."').on('click',function(){
+				var  p = $(this).parent();
+				$(this).before('<div class=\"clearfix\"><span class=\"label label-inverse\"><i class=\"icon-caret-right\"></i> '+(p.children('div').length+1)+'</span> <input type=\"file\" name=\"".$className.'['.$this->attribute."][]\"/></div><hr>');
+			});
+		");
 	}
+
 
 	/**
 	 * Renders a password field.
@@ -272,6 +457,8 @@ class TbInputHorizontal extends TbInput
 		echo $this->getError() . $this->getHint();
 		echo '</div>';
 	}
+
+	// public function imperaviRow(){}
 
 	/**
 	 * Renders a masked text field.

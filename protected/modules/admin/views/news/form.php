@@ -1,10 +1,13 @@
+<div>
+	<h1>
+		<?=$this->pageCaption;?>	</h1>
+</div>
+
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>$this->targetModel.'-form',
 	'enableAjaxValidation'=>true,
 	'type'=>'horizontal',
 )); ?>
-
-	<p>Поля помеченные <span class="required">*</span> обязательны к заполнению.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -13,6 +16,10 @@
 	<?=$form->textFieldRow($model,'title_ru',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<?=$form->checkBoxRow($model,'is_visible'); ?>
+
+	<?=$form->datepickerRow($model,'created_at',array('class'=>'span5','maxlength'=>10)); ?>
+
+	<?=$form->datepickerRow($model,'updated_at',array('class'=>'span5','maxlength'=>10)); ?>
 
 	<div class="form-actions">
 		<button class="btn btn-success" type="submit">

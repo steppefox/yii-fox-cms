@@ -1,16 +1,14 @@
-<?php
-/**
- * The following variables are available in this template:
- * - $this: the BootCrudCode object
- */
-?>
+<div>
+	<h1>
+		<?='<?='?>$this->pageCaption;<?='?>'?>
+	</h1>
+</div>
+
 <?php echo "<?php \$form=\$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>\$this->targetModel.'-form',
 	'enableAjaxValidation'=>true,
 	'type'=>'horizontal',
 )); ?>\n"; ?>
-
-	<p>Поля помеченные <span class="required">*</span> обязательны к заполнению.</p>
 
 	<?php echo "<?php echo \$form->errorSummary(\$model); ?>\n"; ?>
 
