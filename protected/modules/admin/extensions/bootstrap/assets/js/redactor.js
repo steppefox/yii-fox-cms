@@ -373,6 +373,8 @@
 				this.opts.buttons = this.removeFromArrayByValue(this.opts.buttons, 'horizontalrule');
 			}
 
+			console.log(this.opts.langs);
+			console.log(this.opts.lang);
 			// load lang
 			this.opts.curLang = this.opts.langs[this.opts.lang];
 

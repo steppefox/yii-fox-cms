@@ -29,17 +29,17 @@
     <?php echo $form->dropDownListRow($model,'parent_CatalogCategory_id',$categoryList,array('span'=>'span7'));?>
     <?php echo $form->textFieldRow($model, 'description_ru', array('class'=>'span7')); ?>
     <?=$form->redactorRow($model,'text_ru',array('options'=>array(
-        'imageUpload'=>$this->createUrl('timesafe/json/image')
+        'imageUpload'=>$this->createUrl('json/image')
     )));?>
 
 
     <?
-        $this->widget('xupload.XUpload', array(
-            'model' => $model,
-            'attribute' => 'image',
-            'multiple' => true,
-            'showForm' => false,
-        ));
+        // $this->widget('xupload.XUpload', array(
+        //     'model' => $model,
+        //     'attribute' => 'image',
+        //     'multiple' => true,
+        //     'showForm' => false,
+        // ));
     ?>
     <?php echo $form->textFieldRow($model, 'price', array('class'=>'span7')); ?>
     <?php echo $form->checkBoxRow($model,'is_visible');?>

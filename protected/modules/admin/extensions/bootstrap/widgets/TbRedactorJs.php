@@ -69,7 +69,7 @@ class TbRedactorJS extends CInputWidget
 	public function registerClientScript()
 	{
 		Yii::app()->bootstrap->registerAssetCss('redactor.css');
-		Yii::app()->bootstrap->registerAssetJs('redactor.min.js');
+		Yii::app()->bootstrap->registerAssetJs('redactor.js');
 
 		// Prepend language file to scripts package.
 		if ($this->editorOptions['lang'] != 'en') {
