@@ -41,6 +41,11 @@
         //     'showForm' => false,
         // ));
     ?>
+
+    <?
+        echo $form->singleFileFieldRow($model,'image');
+    ?>
+
     <?php echo $form->textFieldRow($model, 'price', array('class'=>'span7')); ?>
     <?php echo $form->checkBoxRow($model,'is_visible');?>
 <div class="form-actions">

@@ -185,6 +185,11 @@ class TbActiveForm extends CActiveForm
 		return $this->inputRow(TbInput::TYPE_FILE, $model, $attribute, null, $htmlOptions);
 	}
 
+	public function singleFileFieldRow($model, $attribute, $htmlOptions = array(),$language=false)
+	{
+		return $this->inputRow('singlefilefield', $model, $attribute, null, $htmlOptions,$language);
+	}
+
 	/**
 	 *### .passwordFieldRow()
 	 *

@@ -166,19 +166,22 @@ class TbInputHorizontal extends TbInput
 
 	protected function singleFileField() {
 		$images = $this->model->getAttribute( $this->attribute );
-		if(json_decode($images,true)===null){
-			$images = array($images);
-		}else{
-			$images = json_decode($images,true);
+		//checking for MongoModels
+		if(!is_array($images)){
+			if(json_decode($images,true)===null){
+				$images = array($images);
+			}else{
+				$images = json_decode($images,true);
+			}
 		}
-
 		$className = get_class( $this->model );
 		echo $this->getLabel().'<div class="controls">';
 		if($images){
 			foreach ($images as $key => $image){
 				$type = 'image';
-				if ( strstr( $this->attribute, 'image' ) ) {
-					$showimage = 'upload/'.$className.'/tm/'.$image;
+				$options = $this->model->options();
+				if ( strstr( $this->attribute, 'image' ) && $options[$this->attribute]) {
+					$showimage = 'upload/'.$className.'/thumbnail/'.$image;
 					$fImage = 'upload/'.$className.'/full/'.$image;
 				}else {
 					$type = 'file';
@@ -203,17 +206,19 @@ class TbInputHorizontal extends TbInput
 							.val()==""){
 								$(this).html("<i class=icon-ok-circle></i> Не удалять")
 								.addClass("btn-success");
+								$("#file-'.$this->attribute.'-'.$key.'").show();
 								$("#'.$className.'-'.$this->attribute.'-delete_'.$key.'")
 								.val(1)
 ;							}else{
 								$(this).html("<i class=icon-remove-circle></i> Удалить")
 								.removeClass("btn-success");
+								$("#file-'.$this->attribute.'-'.$key.'").hide();
 								$("#'.$className.'-'.$this->attribute.'-delete_'.$key.'")
 								.val("");}'
 						)
 					).'<br>';
 					// echo $this->form->fileField( $this->model, $this->attribute, array( 'class'=>'input-file fade out', 'id'=>'file-'.$this->attribute ) );
-					echo CHtml::fileField($className.'['.$this->attribute.'][]','', array( 'class'=>'input-file fade out', 'id'=>'file-'.$this->attribute.'-'.$key));
+					echo CHtml::fileField($className.'['.$this->attribute.'][]','', array( 'class'=>'input-file', 'id'=>'file-'.$this->attribute.'-'.$key,'style'=>'display:none;'));
 
 					//echo CHtml::hiddenField( $this->attribute.'-src-'.$key, $image );
 					echo CHtml::hiddenField( $className.'-'.$this->attribute.'-delete['.$key.']', '' );

@@ -4,7 +4,7 @@
  *
  * @author Christoffer Niska <ChristofferNiska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2011-
- * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php) 
+ * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
  */
 
 /**
@@ -32,6 +32,7 @@ abstract class TbInput extends CInputWidget
 	const TYPE_TEXT = 'text';
 	const TYPE_MASKEDTEXT = 'maskedtextfield';
 	const TYPE_CAPTCHA = 'captcha';
+	const TYPE_SINGLEFILE = 'singlefilefield';
 	const TYPE_UNEDITABLE = 'uneditable';
 	const TYPE_DATEPICKER = 'datepicker';
 	const TYPE_REDACTOR = 'redactor';
@@ -267,6 +268,10 @@ abstract class TbInput extends CInputWidget
 
 			case self::TYPE_PASSWORD:
 				$this->passwordField();
+				break;
+
+			case self::TYPE_SINGLEFILE:
+				$this->singleFileField();
 				break;
 
 			case self::TYPE_RADIO:
