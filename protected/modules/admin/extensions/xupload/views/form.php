@@ -30,7 +30,7 @@ $labels = $this->model->attributeLabels();
             </span>
 			<?php
             if ($this -> hasModel()) :
-                echo CHtml::activeFileField($this -> model, $this -> attribute, $htmlOptions) . "\n";
+                echo CHtml::activeFileField($this->model, $this->attribute, $htmlOptions) . "\n";
             else :
                 echo CHtml::fileField($name, $this -> value, $htmlOptions) . "\n";
             endif;

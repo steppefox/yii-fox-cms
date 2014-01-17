@@ -11,9 +11,12 @@ class CatalogController extends AdminController
         $this->performAjaxValidation($model);
         if (isset($_POST[$this->targetModel])){
             $model->attributes = Yii::app()->request->getPost($this->targetModel,array());
+            $model->image = json_encode(FileHelper::loadFile($model,'image'));
             if ($model->save()){
                 Yii::app()->user->setFlash('contentSaved', 'The page was successfully created!');
                 $this->redirect('list');
+            }else{
+
             }
         }
 
@@ -28,6 +31,7 @@ class CatalogController extends AdminController
         $this->performAjaxValidation($model);
         if (isset($_POST[$this->targetModel])){
             $model->attributes = Yii::app()->request->getPost($this->targetModel,array());
+            $model->image = json_encode(FileHelper::loadFile($model,'image'));
             if ($model->save()){
                 Yii::app()->user->setFlash('contentSaved', 'The page was successfully saved!');
                 $this->redirect(array('list'));
@@ -42,7 +46,7 @@ class CatalogController extends AdminController
     public function actionDelete($id)
     {
         $model = $this->loadModel($id);
-        if (!$model->static)
+        if (!$model->is_static)
         {
             // we only allow deletion via POST request
             $model->delete();

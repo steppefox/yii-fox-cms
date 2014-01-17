@@ -9,6 +9,7 @@ return array(
         'application.models.*',
         'application.components.*',
         'application.widgets.*',
+        'application.helpers.*',
         'application.modules.admin.modules.rights.*',
         'application.modules.admin.modules.rights.components.*',
     ),

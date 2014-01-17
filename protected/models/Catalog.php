@@ -16,10 +16,11 @@ class Catalog extends CActiveRecord
     {
         return array(
             array('title_ru', 'required'),
-            array('status, parent_CatalogCategory_id,price,created_at,updated_at', 'numerical', 'integerOnly' => true),
+            array('parent_CatalogCategory_id,price,created_at,updated_at', 'numerical', 'integerOnly' => true),
             array('title_ru,description_ru', 'length', 'max' => 255),
             array('image,text_ru','length','max'=>65535),
-            array('id, title_ru, description_ru, text_ru, status, parent_CatalogCategory_id', 'safe', 'on' => 'search'),
+            array('is_visible, is_static','numerical','integerOnly'=>true),
+            array('id, title_ru, description_ru, text_ru, parent_CatalogCategory_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -43,7 +44,7 @@ class Catalog extends CActiveRecord
             'price'=> Yii::t('backend', 'Цена'),
             'created_at'=> Yii::t('backend', 'Дата создания'),
             'updated_at'=> Yii::t('backend', 'Дата изменения'),
-            'status'=> Yii::t('backend', 'Видимость'),
+            'is_visible'=> Yii::t('backend', 'Видимость'),
         );
     }
 
@@ -55,7 +56,7 @@ class Catalog extends CActiveRecord
         // $criteria->compare('description_ru', $this->description_ru, true);
         // $criteria->compare('text_ru', $this->text_ru, true);
         // $criteria->compare('parent_CatalogCategory_id', $this->parent_CatalogCategory_id);
-        $criteria->compare('status', $this->status);
+        $criteria->compare('is_visible', $this->is_visible);
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,
@@ -90,4 +91,34 @@ class Catalog extends CActiveRecord
         $this->updated_at = time();
         return true;
     }
+
+    public function options()
+    {
+        return array(
+            'image' => array(
+                'full' => array(
+                    'width' => 440,
+                    'height' => 520,
+                    'type' => 'crop'
+                ),
+                'big' => array(
+                    'width' => 220,
+                    'height' => 260,
+                    'type' => 'crop'
+                ),
+                'sm'=> array(
+                    'width' => 134,
+                    'height' => 134,
+                    'type' => 'crop'
+                ),
+                'thumbnail'=>array(
+                    'width' => 150,
+                    'height' => 150,
+                    'type' => 'crop'
+                ),
+            ),
+        );
+    }
+
+
 }

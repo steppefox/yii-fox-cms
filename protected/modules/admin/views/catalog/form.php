@@ -51,8 +51,17 @@
             <span class="help-inline error" id="Page_url_em_" style="display: none;"></span>
         </div>
     </div>
+
+    <?
+        $this->widget('xupload.XUpload', array(
+            'model' => $model,
+            'attribute' => 'image',
+            'multiple' => true,
+            'showForm' => false,
+        ));
+    ?>
     <?php echo $form->textFieldRow($model, 'price', array('class'=>'span7')); ?>
-    <?php echo $form->checkBoxRow($model,'status');?>
+    <?php echo $form->checkBoxRow($model,'is_visible');?>
 <div class="form-actions">
     <button class="btn btn-success" type="submit">
         <?=$model->isNewRecord ? 'Добавить' : 'Сохранить'; ?>

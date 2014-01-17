@@ -353,8 +353,6 @@ class XUploadAction extends CAction {
                 if(!$model->isNewRecord){
                     $json = json_decode($model->{$this->fileAttribute},true);
                     $json[$fileInfo['hash']] = $fileInfo['filename'];
-                    // $model->{$this->fileAttribute} = json_encode($json);
-                    // $model->save();
                     $model->saveAttributes(array($this->fileAttribute=>json_encode($json)));
                 }else{
                     $files = Yii::app()->user->getState($this->stateVariable,array());

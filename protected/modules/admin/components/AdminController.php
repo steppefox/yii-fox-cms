@@ -24,6 +24,16 @@ class AdminController extends Controller
         return '';
     }
 
+    public function actions(){
+      return array(
+        'upload'=>array(
+          'class'=>'xupload.actions.XUploadAction',
+          'path' =>Yii::app() -> getBasePath() . "/../upload",
+          'publicPath' => Yii::app() -> getBaseUrl() . "/upload",
+        ),
+      );
+    }
+
     public function filterRights( $filterChain ) {
         $filter = new RightsFilter;
         $filter->allowedActions = $this->allowedActions();
