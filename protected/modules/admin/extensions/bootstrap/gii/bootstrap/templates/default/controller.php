@@ -1,33 +1,16 @@
+
 <?php
 /**
  * This is the template for generating a controller class file for CRUD feature.
  * The following variables are available in this template:
  * - $this: the BootCrudCode object
+ * echo $this->baseControllerClass."\n";
  */
 ?>
 <?php echo "<?php\n"; ?>
-class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass."\n"; ?>
+class <?php echo $this->controllerClass; ?> extends AdminController
 {
 	public $targetModel = '<?=$this->modelClass?>';
-
-	public function getTableAttributes(){
-		return array(
-			<?foreach ($this->tableSchema->columns as $column) :if(!in_array($column->name, array('id')) && !strstr($column->name, 'passw') && !strstr($column->name, '_json')):?>'<?=$column->name?>', <?endif;endforeach?>
-		);
-	}
-	public function getDefaultTableAttributes(){
-		return array(<?foreach ($this->tableSchema->columns as $column) :if(in_array($column->name, array('title','email','code','name'))):?>'<?=$column->name?>', <?endif;endforeach?>);
-	}
-
-	public function actions()
-	{
-		return array(
-			'toggle' => array(
-				'class'=>'bootstrap.actions.TbToggleAction',
-				'modelName' => $this->targetModel,
-			)
-		);
-	}
 
 	public $defaultAction = "list";
 
@@ -36,12 +19,19 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 			$model=$this->loadModel($id);
 		}else{
 			$model = new $this->targetModel;
+			$model->created_at = time();
 		}
 
 		$this->performAjaxValidation($model);
 
 		if(isset($_POST[$this->targetModel])){
 			$model->attributes=$_POST[$this->targetModel];
+			<?php foreach($this->tableSchema->columns as $column): ?>
+			<?php if (strstr($column->name, 'image')!==false || strstr($column->name, 'file')!==false): ?>
+			$model-><?=$column->name?> = FileHelper::loadFile($model,'<?=$column->name?>',$returnJson=true);
+			<?php endif ?>
+			<?php endforeach ?>
+
 			if($model->save()){
 			 	Yii::app()->user->setFlash('success', 'Сохранено');
 				$this->redirect(array('list'));
@@ -95,10 +85,14 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 		if(isset($_GET[$this->targetModel]))
 			$model->attributes=$_GET[$this->targetModel];
 		if(Yii::app()->request->isAjaxRequest){
-			$this->renderPartial('_list',array(
+			$this->renderPartial('list',array(
 				'model'=>$model,
+				'onlyTable'=>true,
 			),false,true);
 		}else{
+			$this->breadcrumbs = array(
+				$model::modelTitle()
+			);
 			$this->render('list',array(
 				'model'=>$model,
 			));
@@ -128,29 +122,6 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
-		}
-	}
-
-	public function actionEditable(){
-		if(Yii::app()->request->isAjaxRequest){
-			if($pk = Yii::app()->request->getPost("pk")){
-				$model = $this->loadModel($pk);
-				if($model){
-					if($name = Yii::app()->request->getPost("name")){
-						$value = Yii::app()->request->getPost("value");
-						$model->{$name} = $value;
-						$model->save();
-
-					}
-				}
-			}
-		}
-	}
-
-	public function actionTableSetup(){
-		if($data = Yii::app()->request->getPost("Table")){
-			Yii::app()->user->setState('<?=strtolower($this->modelClass)?>Table',$data);
-			echo "1";
 		}
 	}
 }

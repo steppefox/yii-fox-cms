@@ -80,10 +80,36 @@ foreach($columns as $name=>$column){
 	}
 }
 ?>
-
+		$pagination = array('pageSize'=> 30);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-		));
+            'pagination'=>$pagination,
+            'sort'=>array(
+                'defaultOrder'=>'created_at DESC',
+            )
+        ));
+	}
+
+	public function beforeValidate(){
+		if(parent::beforeValidate()){
+			if ($this->created_at==0) {
+				$this->created_at=time();
+			}
+			if (strstr($this->created_at,'/')) {
+		        $date=explode('/',$this->created_at);
+		        $minute = $hour = 0;
+		        if(isset($_POST['_time']['created_at'])){
+		            $time = explode(':',$_POST['_time']['created_at']);
+		            $hour = (int)$time[0];
+		            $minute = (int)$time[1];
+		        }
+		        $this->created_at=mktime( $hour, $minute, 0, $date[1], $date[0], $date[2] );
+			}
+
+			$this->updated_at = time();
+			return true;
+		}
+		return false;
 	}
 
 <?php
@@ -106,7 +132,23 @@ endforeach;
 
 	public function options(){
 		return array(
-
+			'image' => array(
+                'full' => array(
+                    'width' => 440,
+                    'height' => 520,
+                    'type' => 'crop'
+                ),
+                'sm'=> array(
+                    'width' => 134,
+                    'height' => 134,
+                    'type' => 'crop'
+                ),
+                'thumbnail'=>array(
+                    'width' => 150,
+                    'height' => 150,
+                    'type' => 'crop'
+                ),
+            ),
 		);
 	}
 

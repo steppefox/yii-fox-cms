@@ -10,6 +10,13 @@ class AdminController extends Controller
     public $layout = 'main';
     public $pageTitle ='';
     public $pageCaption = '';
+    public $langs = array(
+        'ru',
+        'kz',
+        'en',
+        'ko',
+    );
+    public $returnUrl='';
 
     public function init()
     {

@@ -177,7 +177,9 @@ class TbInputHorizontal extends TbInput
 		$className = get_class( $this->model );
 		echo $this->getLabel().'<div class="controls">';
 		if($images){
+			$counter = -1;
 			foreach ($images as $key => $image){
+				$counter++;
 				$type = 'image';
 				$options = $this->model->options();
 				if ( strstr( $this->attribute, 'image' ) && $options[$this->attribute]) {
@@ -190,7 +192,7 @@ class TbInputHorizontal extends TbInput
 				if ( is_file( $showimage ) ) {
 					$size = getimagesize( $showimage );
 					if ( $type==='image' )
-						echo '<div class="span3"><span class="label label-inverse"><i class="icon-caret-right"></i> '.($key+1).'</span> '.CHtml::link( CHtml::image( '/'.$showimage.'', '', array( 'width'=>$size['0'], 'height'=>$size['1'] ) ), '/'.$fImage, array( 'target'=>'_blank' ) ).'&nbsp;</div>';
+						echo '<div class="span3"><span class="label label-inverse"><i class="icon-caret-right"></i> '.($counter+1).'</span> '.CHtml::link( CHtml::image( '/'.$showimage.'', '', array( 'width'=>$size['0'], 'height'=>$size['1'] ) ), '/'.$fImage, array( 'target'=>'_blank' ) ).'&nbsp;</div>';
 					else {
 						echo '<div class="span3">'.CHtml::link( '<i class="icon-search"></i> Показать ('.round( filesize( $showimage )/1024 ).' Кб)', '/'.$showimage, array( 'class'=>'btn', 'target'=>'_blank' ) ).'&nbsp;</div>';
 					}

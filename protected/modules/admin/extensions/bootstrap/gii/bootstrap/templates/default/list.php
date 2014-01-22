@@ -1,11 +1,19 @@
+
+<?php echo '<? if(!$onlyTable): ?>'?>
+<div>
+    <h2>
+        <?php echo '<?php echo $model::modelTitle();?>'?>
+    </h2>
+</div>
 <div class="form-actions">
-	<a href="<?='<?='?>$this->createUrl('form')<?='?>'?>" class="btn btn-success">
+	<a href="<?php echo '<?php echo '?>$this->createUrl('form')<?php echo '?>'?>" class="btn btn-success">
 		<i class="icon-plus"></i>&nbsp;Добавить
 	</a>
 </div>
 
-<?='<?php ';?>
-$model = new $this->targetModel;
+<?php echo '<? endif; ?>'?>
+
+<?php echo '<?php '?>
 $this->widget('bootstrap.widgets.TbExtendedGridView', array(
 	'fixedHeader' => true,
 	'headerOffset' => 40, // 40px is the height of the main navigation at bootstrap
@@ -57,4 +65,4 @@ $this->widget('bootstrap.widgets.TbExtendedGridView', array(
     ),
 ));
 
-<?='?>'?>
+<?php echo '?>'?>

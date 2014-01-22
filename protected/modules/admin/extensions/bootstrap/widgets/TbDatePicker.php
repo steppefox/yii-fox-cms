@@ -56,7 +56,9 @@ class TbDatePicker extends CInputWidget
 	public function run()
 	{
 		list($name, $id) = $this->resolveNameID();
-
+		if(is_numeric($this->model->{$this->attribute})){
+			$this->model->{$this->attribute} = date('d/m/Y',$this->model->{$this->attribute});
+		}
 		if ($this->hasModel()) {
 			if ($this->form) {
 				echo $this->form->textField($this->model, $this->attribute, $this->htmlOptions);
@@ -67,7 +69,9 @@ class TbDatePicker extends CInputWidget
 		} else {
 			echo CHtml::textField($name, $this->value, $this->htmlOptions);
 		}
-
+		if(!$this->options['format']){
+			$this->options['format'] = 'dd/mm/yyyy';
+		}
 		$this->registerClientScript();
 		$this->registerLanguageScript();
 		$options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
@@ -98,7 +102,7 @@ class TbDatePicker extends CInputWidget
 		if (isset($this->options['language']) && $this->options['language'] != 'en') {
 			$file = 'locales/bootstrap-datepicker.' . $this->options['language'] . '.js';
 			if (@file_exists(Yii::getPathOfAlias('bootstrap.assets') . '/js/' . $file)) {
-				if (Yii::app()->bootstrap->enableCdn) {
+				if (Yii::app()->bootstrap->enableCdn && 1==2) {
 					Yii::app()->clientScript->registerScriptFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.0.2/js/locales/bootstrap-datepicker.' . $this->options['language'] . '.js', CClientScript::POS_END);
 				} else {
 					Yii::app()->bootstrap->registerAssetJs('locales/bootstrap-datepicker.' . $this->options['language'] . '.js');

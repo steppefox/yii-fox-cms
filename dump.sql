@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.31, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.14  Distrib 5.5.34-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: fox
 -- ------------------------------------------------------
--- Server version	5.5.31-0ubuntu0.12.10.1
+-- Server version	5.5.34-MariaDB-1~precise-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -137,10 +137,11 @@ CREATE TABLE `data_Catalog` (
   `price` int(10) unsigned NOT NULL DEFAULT '0',
   `created_at` int(10) unsigned NOT NULL DEFAULT '0',
   `updated_at` int(10) unsigned DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `is_static` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `parent_CatalogCategory_id` (`parent_CatalogCategory_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +150,7 @@ CREATE TABLE `data_Catalog` (
 
 LOCK TABLES `data_Catalog` WRITE;
 /*!40000 ALTER TABLE `data_Catalog` DISABLE KEYS */;
-INSERT INTO `data_Catalog` VALUES (1,1,'Прожектор X100-500','Самый клёвый прожектор','<p>\r\n	<strong>Прожектор X100-500</strong>\r\n</p>\r\n<p>\r\n	Самый мощный прожектор на просторах РК.\r\n</p>','',90000,1375382019,1375382019,1);
+INSERT INTO `data_Catalog` VALUES (6,0,'123123123','','<p>asdfasdfasdf</p><p><img src=\"/./upload/aa41f9cdc08ff782ce15585fd0ccbf1b.jpg\" style=\"width: 153px;\"></p>','{\"ba8945d24a0be405a98a1e02d5133600\":\"Catalog-image-6-ba8945d24a0be405a98a1e02d5133600.jpg\"}',0,1389976423,1389983971,1,0);
 /*!40000 ALTER TABLE `data_Catalog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,6 +217,35 @@ INSERT INTO `data_Navigation` VALUES (1,0,'[]',1,'/','Главная',1,1),(2,0,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `data_News`
+--
+
+DROP TABLE IF EXISTS `data_News`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `data_News` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_NewsCategory_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `title_ru` varchar(255) NOT NULL,
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` int(10) unsigned NOT NULL DEFAULT '0',
+  `updated_at` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `parent_NewsCategory_id` (`parent_NewsCategory_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `data_News`
+--
+
+LOCK TABLES `data_News` WRITE;
+/*!40000 ALTER TABLE `data_News` DISABLE KEYS */;
+INSERT INTO `data_News` VALUES (1,0,'asdasd',1,0,0);
+/*!40000 ALTER TABLE `data_News` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `data_Page`
 --
 
@@ -256,6 +286,7 @@ DROP TABLE IF EXISTS `data_User`;
 CREATE TABLE `data_User` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(255) NOT NULL,
+  `nicename` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -269,7 +300,7 @@ CREATE TABLE `data_User` (
 
 LOCK TABLES `data_User` WRITE;
 /*!40000 ALTER TABLE `data_User` DISABLE KEYS */;
-INSERT INTO `data_User` VALUES (1,'root','root@vesna.kz','202cb962ac59075b964b07152d234b70',1),(2,'user','user@vesna.kz','202cb962ac59075b964b07152d234b70',1);
+INSERT INTO `data_User` VALUES (1,'root','Admin','root@steppefox.kz','$2a$13$mfC2ArEm6rChtP5IlpQ8Z.SNBid8.bh6kXSPkhCWf.Gg8hZSbAf2G',1),(2,'user','Mortal','user@steppefox.kz','$2a$13$2v/OdTK3sDdo3ipG7KJD8eIm7U7njYccCgwkpDj1WVvvXUV3ObOYK',1);
 /*!40000 ALTER TABLE `data_User` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,4 +362,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-08-07 17:05:24
+-- Dump completed on 2014-01-22 15:39:23

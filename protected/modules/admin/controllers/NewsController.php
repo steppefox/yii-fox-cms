@@ -1,6 +1,5 @@
 <?php
-class NewsController extends AdminController
-{
+class NewsController extends AdminController{
 	public $targetModel = 'News';
 
 	public function getTableAttributes(){

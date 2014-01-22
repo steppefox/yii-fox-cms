@@ -76,6 +76,10 @@ class TbRedactorJS extends CInputWidget
 			Yii::app()->bootstrap->registerAssetJs('locales/redactor/' . $this->editorOptions['lang'] . '.js');
 		}
 
+		if(!$this->editorOptions['imageUpload']){
+			$this->editorOptions['imageUpload']=Yii::app()->controller->createUrl('json/image');
+		}
+
 		if (isset($this->editorOptions['plugins'])) {
 			foreach ($this->editorOptions['plugins'] as $name) {
 				Yii::app()->bootstrap->registerAssetCss('redactor/plugins/' . $name . '.css');

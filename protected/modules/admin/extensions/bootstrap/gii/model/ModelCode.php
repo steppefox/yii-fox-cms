@@ -36,14 +36,14 @@ class ModelCode extends CCodeModel
 	public function attributeLabels()
 	{
 		return array_merge(parent::attributeLabels(), array(
-			'tablePrefix'=>'Table Prefix',
-			'tableName'=>'Table Name',
-			'modelPath'=>'Model Path',
-			'modelClass'=>'Model Class',
-			'modelTitle'=>'Имя модели',
-			'baseClass'=>'Base Class',
-			'buildRelations'=>'Build Relations',
-			'connectionId'=>'Database Connection',
+			'tablePrefix'=>'Префикс таблицы',
+			'tableName'=>'Имя таблицы',
+			'modelPath'=>'Путь к модели',
+			'modelClass'=>'Класс модели',
+			'modelTitle'=>'Русское имя модели',
+			'baseClass'=>'Базовый (родительский) класс',
+			'buildRelations'=>'Строить связи?',
+			'connectionId'=>'Соединение с БД',
 		));
 	}
 
@@ -202,7 +202,23 @@ class ModelCode extends CCodeModel
 		{
 			$label=ucwords(trim(strtolower(str_replace(array('-','_'),' ',preg_replace('/(?<![A-Z])[A-Z]/', ' \0', $column->name)))));
 			$label=preg_replace('/\s+/',' ',$label);
-			if(strcasecmp(substr($label,-3),' id')===0)
+			if(strstr($label,'Title')!==false){
+				$label = str_replace('Title', 'Заголовк', $label);
+			}elseif(strstr($label,'Description')!==false){
+				$label = str_replace('Description', 'Краткое описание', $label);
+			}elseif(strstr($label,'Text')!==false){
+				$label = str_replace('Text', 'Текст', $label);
+			}elseif(strstr($label,'Image')!==false){
+				$label = str_replace('Image', 'Изображение', $label);
+			}elseif(strstr($label,'Created At')!==false){
+				$label = str_replace('Created At', 'Дата создания', $label);
+			}elseif(strstr($label,'Updated At')!==false){
+				$label = str_replace('Updated At', 'Дата редактирования', $label);
+			}elseif(strstr($label,'Price')!==false){
+				$label = str_replace('Price', 'Цена', $label);
+			}elseif(strstr($label,'Is Visible')!==false){
+				$label = str_replace('Is Visible', 'Видимость', $label);
+			}elseif(strcasecmp(substr($label,-3),' id')===0)
 				$label=substr($label,0,-3);
 			if($label==='Id')
 				$label='ID';
